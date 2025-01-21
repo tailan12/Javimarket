@@ -1,0 +1,61 @@
+  ###### EXEMPLOS DE TUPLAS ######
+
+cursor.execute("SELECT * FROM produtos")
+produtos = cursor.fetchall()
+for row in produtos:
+    print(f"ID: {row[0]} | Nome: {row[1]} | Atacadão: R${row[2]:.2f} | Açaí: R${row[3]:.2f}")
+
+
+
+
+###### EXEMPLOS DE MODULARAZACAO ######
+
+def listar_produtos():
+    print("\nProdutos disponíveis:")
+    cursor.execute("SELECT * FROM produtos")
+    produtos = cursor.fetchall()
+    if produtos:
+        for row in produtos:
+            print(f"ID: {row[0]} | Nome: {row[1]} | Atacadão: R${row[2]:.2f} | Açaí: R${row[3]:.2f}")
+    else:
+        print("Nenhum produto disponível.")
+
+
+###### EXEMPLOS DE CLASSE E OBJETOS  ######
+
+class Produto:
+    def init(self, nome, preco_atacadao, preco_acai):
+        self.nome = nome
+        self.preco_atacadao = preco_atacadao
+        self.preco_acai = preco_acai
+
+
+
+###### EXEMPLOS DE DICIONARIOS ######
+
+carrinho.append({"produto": produto, "quantidade": quantidade})
+
+
+
+###### EXEMPLOS DE BANCO DE DADOS ######
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS produtos (
+    id INTEGER PRIMARY KEY,
+    nome TEXT NOT NULL,
+    preco_atacadao REAL NOT NULL,
+    preco_acai REAL NOT NULL
+)
+''')
+
+def adicionar_ao_carrinho(carrinho, produto_id, quantidade):
+    cursor.execute("SELECT * FROM produtos WHERE id = ?", (produto_id,))
+    produto = cursor.fetchone()
+    if produto:
+        carrinho.append({"produto": produto, "quantidade": quantidade})
+        print(f"Adicionado: {produto[1]} (x{quantidade})")
+    else:
+        print("Produto não encontrado.")
+
+
+##### EXEMPLOS DE  ######

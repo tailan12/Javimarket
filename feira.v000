@@ -1,5 +1,7 @@
 import sqlite3
 
+
+
 conn = sqlite3.connect("feira.db")
 cursor = conn.cursor()
 
@@ -19,6 +21,24 @@ CREATE TABLE IF NOT EXISTS usuarios (
     senha TEXT NOT NULL
 )
 ''')
+
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS supermercados(
+    id INTEGER PRIMARY KEY,
+nome TEXT UNIQUE NOT NULL
+)
+''')
+
+def adicionar_supermercado():
+    print("\nCadastro de novo supermercado:")
+    nome_supermercado = input("digite o nome do supermercado: ")
+    cursor.execute(
+    "INSERT INTO supermercados (nome) VALUES (?)",
+    (nome_supermercado,)
+    )
+    conn.commit()
+    print(f"supermercado '{nome_supermercado}' cadastrado com sucesso!")
+
 
 def cadastrar_usuario():
     while True:
@@ -140,6 +160,7 @@ def menu_administrador():
         print("3. Remover produtos")
         print("4. Listar produtos")
         print("5. Voltar")
+        print("6. adicionar supermercado")
         opcao = input("Escolha uma opção: ")
 
         if opcao == "1":
@@ -152,6 +173,8 @@ def menu_administrador():
             listar_produtos()
         elif opcao == "5":
             break
+        elif opcao == "6":
+            adicionar_supermercado()
         else:
             print("Opção inválida. Tente novamente.")
 
@@ -212,20 +235,20 @@ if __name__ == "__main__":
 conn.close()
 
 def adicionar_supermercado():
-    print("/nCadastro de novo supermercado:")
+    print("\nCadastro de novo supermercado:")
     nome_supermercado = input("digite o nome do supermercado: ")
     cursor.execute(
-    "INSERT INTO supermercado (nome) VALUES (?)",
+    "INSERT INTO supermercados (nome) VALUES (?)",
     (nome_supermercado,)
-)
-conn.commit()
-print(f"supermercado '{nome_supermercado}' cadastrado com sucesso!")
+    )
+    conn.commit()
+    print(f"supermercado '{nome_supermercado}' cadastrado com sucesso!")
 
 ##### MODIFICANDO A CRIAÇÃO DA TABELA #####
 
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS supermercados(
-    id INTERGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
 nome TEXT UNIQUE NOT NULL
 )
 ''')

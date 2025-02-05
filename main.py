@@ -234,21 +234,3 @@ if __name__ == "__main__":
 
 conn.close()
 
-def adicionar_supermercado():
-    print("\nCadastro de novo supermercado:")
-    nome_supermercado = input("digite o nome do supermercado: ")
-    cursor.execute(
-    "INSERT INTO supermercados (nome) VALUES (?)",
-    (nome_supermercado,)
-    )
-    conn.commit()
-    print(f"supermercado '{nome_supermercado}' cadastrado com sucesso!")
-
-##### MODIFICANDO A CRIAÇÃO DA TABELA #####
-
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS supermercados(
-    id INTEGER PRIMARY KEY,
-nome TEXT UNIQUE NOT NULL
-)
-''')

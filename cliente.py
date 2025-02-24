@@ -1,3 +1,6 @@
+import sqlite3
+
+
 def cadastrar_usuario(cursor, conn):
     while True:
         print("\nCadastro de usuário:")

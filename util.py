@@ -1,9 +1,12 @@
-def conectar_banco():
-    conn = sqlite3.connect("feira.db")
-    cursor = conn.cursor()
-    return conn, cursor
+import sqlite3
 
-def criar_tabelas(cursor, conn):
+def conectar_banco(db_name="feira.db"):
+    """Retorna uma conexão com o banco de dados."""
+    return sqlite3.connect(db_name)
+
+def criar_tabelas(conn):
+    cursor = conn.cursor()
+
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS produtos (
         id INTEGER PRIMARY KEY,
@@ -12,27 +15,36 @@ def criar_tabelas(cursor, conn):
         preco_acai REAL NOT NULL
     )
     ''')
+
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS usuarios (
         id INTEGER PRIMARY KEY,
         username TEXT UNIQUE NOT NULL,
-        senha TEXT NOT NULL
+        senha TEXT NOT NULL,
+        email TEXT UNIQUE NOT NULL,
+        endereco TEXT NOT NULL,
+        cpf TEXT UNIQUE NOT NULL
     )
     ''')
+
     cursor.execute('''
-    CREATE TABLE IF NOT EXISTS supermercados(
+    CREATE TABLE IF NOT EXISTS supermercados (
         id INTEGER PRIMARY KEY,
         nome TEXT UNIQUE NOT NULL
     )
     ''')
+
     conn.commit()
 
-def listar_produtos(cursor):
-    print("\nProdutos disponíveis:")
-    cursor.execute("SELECT * FROM produtos")
-    produtos = cursor.fetchall()
-    if produtos:
-        for row in produtos:
-            print(f"ID: {row[0]} | Nome: {row[1]} | Atacadão: R${row[2]:.2f} | Açaí: R${row[3]:.2f}")
-    else:
-        print("Nenhum produto disponível.")
+
+def adicionar_supermercado(conn):
+    """Cadastra um novo supermercado na tabela."""
+    print("\nCadastro de novo supermercado:")
+    nome_supermercado = input("Digite o nome do supermercado: ")
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO supermercados (nome) VALUES (?)",
+        (nome_supermercado,)
+    )
+    conn.commit()
+    print(f"Supermercado '{nome_supermercado}' cadastrado com sucesso!")
